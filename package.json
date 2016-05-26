@@ -1,0 +1,59 @@
+{
+  "name": "rmc-date-picker",
+  "version": "1.0.0",
+  "description": "rmc-date-picker ui component for react",
+  "keywords": [
+    "react",
+    "react-rmc-date-picker",
+    "rmc-date-picker"
+  ],
+  "homepage": "https://github.com/xshua06/rmc-date-picker",
+  "author": "xshua06@163.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xshua06/rmc-date-picker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xshua06/rmc-date-picker/issues"
+  },
+  "files": [
+    "lib",
+    "assets/*.css"
+  ],
+  "licenses": "MIT",
+  "main": "./lib/DatePicker",
+  "config": {
+    "port": 8007
+  },
+  "scripts": {
+    "build": "rc-tools run build",
+    "gh-pages": "rc-tools run gh-pages",
+    "start": "rc-tools run server",
+    "pub": "rc-tools run pub",
+    "lint": "rc-tools run lint",
+    "karma": "rc-tools run karma",
+    "saucelabs": "rc-tools run saucelabs",
+    "test": "rc-tools run test",
+    "chrome-test": "rc-tools run chrome-test",
+    "coverage": "rc-tools run coverage"
+  },
+  "devDependencies": {
+    "expect.js": "0.3.x",
+    "fastclick": "^1.0.6",
+    "gregorian-calendar-format": "~4.0.4",
+    "jquery": "^2.1.4",
+    "pre-commit": "1.x",
+    "rc-tools": "5.x",
+    "react": "0.14.x",
+    "react-addons-test-utils": "0.14.x",
+    "react-dom": "0.14.x"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "dependencies": {
+    "classnames": "2.x",
+    "gregorian-calendar": "4.x",
+    "rmc-picker": "2.x"
+  }
+}
