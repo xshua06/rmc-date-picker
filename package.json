@@ -54,6 +54,6 @@
   "dependencies": {
     "classnames": "2.x",
     "gregorian-calendar": "4.x",
-    "rmc-picker": "2.x"
+    "rmc-picker": "github:xshua06/rmc-picker"
   }
 }

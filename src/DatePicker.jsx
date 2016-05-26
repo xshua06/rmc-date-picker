@@ -28,6 +28,7 @@ const DatePicker = React.createClass({
     mode: PropTypes.string,
     locale: PropTypes.object,
     onDateChange: PropTypes.func,
+    disabled: PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -38,6 +39,7 @@ const DatePicker = React.createClass({
       mode: DATE,
       onDateChange() {
       },
+      disabled: false,
     };
   },
 
@@ -330,7 +332,7 @@ const DatePicker = React.createClass({
   },
   render() {
     const props = this.props;
-    const { mode, prefixCls, pickerPrefixCls, className } = props;
+    const { mode, prefixCls, pickerPrefixCls, className, disabled } = props;
     const date = this.getDate();
     let dataSource = [];
     let value = [];
@@ -351,6 +353,7 @@ const DatePicker = React.createClass({
           pure={false}
           selectedValue={value[i]}
           onValueChange={this.onValueChange.bind(this, i)}
+          disabled={disabled}
         >
           {items}
         </Picker>
