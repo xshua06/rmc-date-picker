@@ -78,6 +78,7 @@ const Demo = React.createClass({
           onPickerChange={this.onPickerChange}
           onDismiss={this.onDismiss}
           onChange={this.onChange}
+          format={['days', 'years', 'months']}
         >
           <button onClick={this.show}>{date && format(date) || 'open'}</button>
         </PopPicker>
