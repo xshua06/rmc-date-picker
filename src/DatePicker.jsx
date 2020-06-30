@@ -29,6 +29,7 @@ const DatePicker = React.createClass({
     locale: PropTypes.object,
     onDateChange: PropTypes.func,
     disabled: PropTypes.bool,
+    format: PropTypes.Array,
   },
 
   getDefaultProps() {
@@ -40,6 +41,7 @@ const DatePicker = React.createClass({
       onDateChange() {
       },
       disabled: false,
+      format: ['years', 'months', 'days'],
     };
   },
 
@@ -57,35 +59,35 @@ const DatePicker = React.createClass({
     }
   },
 
-  onValueChange(index, value) {
+  onValueChange(type, value) {
     const props = this.props;
     let newValue = this.getDate().clone();
     if (props.mode === DATETIME || props.mode === DATE) {
-      switch (index) {
-        case 0:
+      switch (type) {
+        case 'years':
           newValue.setYear(value);
           break;
-        case 1:
+        case 'months':
           newValue.rollSetMonth(value);
           break;
-        case 2:
+        case 'days':
           newValue.rollSetDayOfMonth(value);
           break;
-        case 3:
+        case 'hours':
           newValue.setHourOfDay(value);
           break;
-        case 4:
+        case 'minutes':
           newValue.setMinutes(value);
           break;
         default:
           break;
       }
     } else {
-      switch (index) {
-        case 0:
+      switch (type) {
+        case 'hours':
           newValue.setHourOfDay(value);
           break;
-        case 1:
+        case 'minutes':
           newValue.setMinutes(value);
           break;
         default:
@@ -179,6 +181,7 @@ const DatePicker = React.createClass({
   },
 
   getDateData() {
+    const props = this.props;
     const locale = this.props.locale;
     const date = this.getDate();
     const selYear = date.getYear();
@@ -229,7 +232,37 @@ const DatePicker = React.createClass({
         label: i + locale.day,
       });
     }
-    return [years, months, days];
+    if (!Array.isArray(props.format)) {
+      return [{
+        key: 'years',
+        value: years,
+      }, {
+        key: 'months',
+        value: months,
+      }, {
+        key: 'days',
+        value: days,
+      }];
+    }
+    const dateSequence = props.format.map((item) => {
+      if (item === 'years') {
+        return {
+          key: item,
+          value: years,
+        };
+      } else if (item === 'months') {
+        return {
+          key: item,
+          value: months,
+        };
+      } else if (item === 'days') {
+        return {
+          key: item,
+          value: days,
+        };
+      }
+    });
+    return dateSequence;
   },
   getTimeData() {
     let minHour = 0;
@@ -291,7 +324,13 @@ const DatePicker = React.createClass({
         label: i + locale.minute,
       });
     }
-    return [hours, minutes];
+    return [{
+      key: 'hours',
+      value: hours,
+    }, {
+      key: 'minutes',
+      value: minutes,
+    }];
   },
   getGregorianCalendar() {
     return new GregorianCalendar(this.props.locale.calendar);
@@ -330,32 +369,48 @@ const DatePicker = React.createClass({
     }
     return date;
   },
+  formatDateValue() {
+    const { format } = this.props;
+    const date = this.getDate();
+    if (!Array.isArray(format)) {
+      return [date.getYear(), date.getMonth(), date.getDayOfMonth()];
+    }
+    const values = format.map((item) => {
+      if (item === 'years') {
+        return date.getYear();
+      } else if (item === 'months') {
+        return date.getMonth();
+      } else if (item === 'days') {
+        return date.getDayOfMonth();
+      }
+    });
+    return values;
+  },
   render() {
     const props = this.props;
     const { mode, prefixCls, pickerPrefixCls, className, disabled } = props;
-    const date = this.getDate();
     let dataSource = [];
     let value = [];
     if (mode === DATETIME || mode === DATE) {
       dataSource = [...this.getDateData()];
-      value = [date.getYear(), date.getMonth(), date.getDayOfMonth()];
+      value = this.formatDateValue();
     }
 
     if (mode === DATETIME || mode === TIME) {
+      const date = this.getDate();
       dataSource = dataSource.concat(this.getTimeData());
       value = value.concat([date.getHourOfDay(), date.getMinutes()]);
     }
-
     const inner = dataSource.map((items, i) => {
       return (<div key={i} className={`${prefixCls}-item`}>
         <Picker
           prefixCls={pickerPrefixCls}
           pure={false}
           selectedValue={value[i]}
-          onValueChange={this.onValueChange.bind(this, i)}
+          onValueChange={this.onValueChange.bind(this, items.key)}
           disabled={disabled}
         >
-          {items}
+          {items.value}
         </Picker>
       </div>);
     });

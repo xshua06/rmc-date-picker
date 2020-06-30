@@ -90,6 +90,7 @@ const PopupDatePicker = React.createClass({
       <DatePicker
         date={this.state.pickerDate || props.date}
         mode={props.mode}
+        arrange={props.arrange}
         locale={props.locale}
         onDateChange={this.onPickerChange}
         {...dpProps}
